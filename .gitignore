@@ -1,0 +1,24 @@
+# Python
+*.pyc
+.eggs/
+*.egg-info
+dist/
+# vim
+*.sw*
+# Testing
+.cache/
+junit.xml
+.tox/
+# virtualenv
+.env/
+# coverage.py
+.coverage
+htmlcov/
+coverage.xml
+# sqlite
+*.sqlite*
+# doc
+doc/_build
+# development
+dev_orchestra/*.yaml
+dev_orchestra/*.pem
