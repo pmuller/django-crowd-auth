@@ -23,6 +23,7 @@ VERSION = get_version(PACKAGE)
 setup(
     name=NAME,
     version=VERSION,
+    description='Atlassian Crowd SSO integration for Django applications',
     long_description=read('README.rst'),
     packages=find_packages(exclude=['dev']),
     author='Philippe Muller',
