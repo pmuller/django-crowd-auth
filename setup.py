@@ -37,4 +37,5 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
     keywords='django crowd sso authentication backend middleware',
+    url='https://github.com/pmuller/django-crowd-auth',
 )
