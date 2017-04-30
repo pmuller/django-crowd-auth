@@ -35,6 +35,11 @@ setup(
     include_package_data=True,
     classifiers=[
         'Programming Language :: Python :: 3.5',
+        'Framework :: Django',
+        'Intended Audience :: Developers',
+        'Environment :: Web Environment',
+        'Development Status :: 5 - Production/Stable',
+        'Operating System :: OS Independent',
     ],
     keywords='django crowd sso authentication backend middleware',
     url='https://github.com/pmuller/django-crowd-auth',
