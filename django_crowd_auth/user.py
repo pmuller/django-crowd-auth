@@ -8,10 +8,10 @@ from django.core.exceptions import ObjectDoesNotExist
 LOGGER = logging.getLogger(__name__)
 
 
-def from_session(client, session):
-    """Get a Django user from a Crowd session.
+def from_data(client, data):
+    """Get a Django user from a Crowd user data.
     """
-    username = session['user']['name']
+    username = data['name']
     is_active = getattr(settings, 'CROWD_USERS_ARE_ACTIVE', True)
     superusers_group = getattr(settings, 'CROWD_SUPERUSERS_GROUP', None)
     is_superuser = False
@@ -37,9 +37,9 @@ def from_session(client, session):
     except ObjectDoesNotExist:
         user = User.objects.create(
             username=username,
-            first_name=session['user'].get('first-name'),
-            last_name=session['user'].get('last-name'),
-            email=session['user'].get('email'),
+            first_name=data.get('first-name'),
+            last_name=data.get('last-name'),
+            email=data.get('email'),
             is_active=is_active,
             is_staff=is_staff,
             is_superuser=is_superuser)

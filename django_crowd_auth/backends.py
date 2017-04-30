@@ -48,7 +48,7 @@ class Backend(ModelBackend):
 
             request.session.save()
 
-            return user.from_session(client, session)
+            return user.from_data(client, session['user'])
 
         else:
             if 'crowd_session_last_validation' in request.session:

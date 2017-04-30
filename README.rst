@@ -96,3 +96,14 @@ Example
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django_crowd_auth.middleware.sso',
     ]
+
+
+Synchronization
+---------------
+
+While users and groups are created on the fly
+(i.e. when they access the Django application),
+it is sometimes necessary to mirror Crowd users and groups in Django.
+
+This package includes a ``sync_crowd`` management command for this purpose.
+To use it, simply add ``django_crowd_auth`` to the ``INSTALLED_APPS``.
