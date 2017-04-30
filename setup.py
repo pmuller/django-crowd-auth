@@ -36,4 +36,5 @@ setup(
     classifiers=[
         'Programming Language :: Python :: 3.5',
     ],
+    keywords='django crowd sso authentication backend middleware',
 )
