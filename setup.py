@@ -38,4 +38,5 @@ setup(
     ],
     keywords='django crowd sso authentication backend middleware',
     url='https://github.com/pmuller/django-crowd-auth',
+    license='Apache License 2.0',
 )
