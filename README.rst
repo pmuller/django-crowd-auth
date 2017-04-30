@@ -55,12 +55,14 @@ Settings
 --------
 
 * ``CROWD_CLIENT``: must be a dict with these keys:
+
   * ``crowd_url``: mandatory
   * ``app_name``: mandatory
   * ``app_pass``: mandatory
   * ``ssl_verify``: defaults to ``True``. Also accepts a path to a CA bundle.
   * ``timeout``: no timeout by default
   * ``client_cert``
+
 * ``CROWD_USERS_ARE_ACTIVE``: Defaults to ``True``.
   If ``True``, set the ``is_active`` user model attribute to ``True`` when
   creating Django users.
