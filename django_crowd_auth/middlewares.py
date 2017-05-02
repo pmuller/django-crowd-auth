@@ -34,7 +34,8 @@ def sso(get_response):
                 crowd_session_validation_interval
 
             if crowd_session_expiry <= time():
-                LOGGER.info('Crowd session validation expired, logging out')
+                LOGGER.info('Crowd session validation expired, logging out %s',
+                            request.user.username)
                 logout(request)
 
         cookie_token = request.COOKIES.get(cookie_name)
