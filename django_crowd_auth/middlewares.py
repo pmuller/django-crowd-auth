@@ -52,8 +52,9 @@ def sso(get_response):
         response = get_response(request)
         crowd_session_expiry = request.session.get('crowd_session_expiry')
 
-        if request.user.is_authenticated and crowd_session_expiry \
-                and (cookie_token or 'crowd_session_token' in request.session):
+        if request.user and request.user.is_authenticated and \
+                crowd_session_expiry and (
+                    cookie_token or 'crowd_session_token' in request.session):
             if not cookie_token:
                 cookie_token = request.session['crowd_session_token']
 
