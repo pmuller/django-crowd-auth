@@ -2,7 +2,8 @@ import logging
 from time import time
 
 from django_crowd_auth.client import Client
-from django.contrib.auth import login, logout, authenticate
+from django_crowd_auth.backends import Backend
+from django.contrib.auth import login, logout
 from django.conf import settings
 
 
@@ -34,28 +35,27 @@ def sso(get_response):
                 crowd_session_validation_interval
 
             if crowd_session_expiry <= time():
-                LOGGER.info('Crowd session validation expired, logging out %s',
-                            request.user.username)
+                LOGGER.debug(
+                    'Crowd session validation expired, logging out %s',
+                    request.user.username)
                 logout(request)
 
         cookie_token = request.COOKIES.get(cookie_name)
 
         if not request.user.is_authenticated and cookie_token:
             LOGGER.debug('Trying to auth from cookie %s', cookie_token)
-            # Try to authenticate the user from a Crowd session cookie
-            request.user = authenticate(request, token=cookie_token)
+            user = Backend().authenticate(request, token=cookie_token)
 
-            if request.user:
-                login(request, None)
+            if user:
+                login(request, user, 'django_crowd_auth.backends.Backend')
                 LOGGER.info('User %s logged in from Crowd session',
                             request.user.username)
 
         response = get_response(request)
         crowd_session_expiry = request.session.get('crowd_session_expiry')
 
-        if request.user and request.user.is_authenticated and \
-                crowd_session_expiry and (
-                    cookie_token or 'crowd_session_token' in request.session):
+        if request.user.is_authenticated and crowd_session_expiry and (
+                cookie_token or 'crowd_session_token' in request.session):
             if not cookie_token:
                 cookie_token = request.session['crowd_session_token']
 
