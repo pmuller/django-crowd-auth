@@ -29,7 +29,7 @@ setup(
     author='Philippe Muller',
     author_email='philippe.muller@gmail.com',
     install_requires=[
-        'django >=1.11',
+        'django >=1.10.5',
         'crowd >=1.0.1',
     ],
     include_package_data=True,
