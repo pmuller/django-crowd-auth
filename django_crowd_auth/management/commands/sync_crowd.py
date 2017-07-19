@@ -19,7 +19,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser):  # pylint: disable=no-self-use
         """Configure the argument parser.
         """
-        parser.add_argument('-D', '--debug', default=False, action='store_true')
+        parser.add_argument(
+            '-D', '--debug', default=False, action='store_true')
 
     def handle(self, debug, *args, **kwargs):
         """Command entry point.
