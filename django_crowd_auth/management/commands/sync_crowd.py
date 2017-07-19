@@ -22,7 +22,8 @@ class Command(BaseCommand):
         parser.add_argument(
             '-D', '--debug', default=False, action='store_true')
 
-    def handle(self, debug, *args, **kwargs):
+    def handle(  # pylint: disable=unused-argument
+            self, debug, *args, **kwargs):
         """Command entry point.
         """
         logging.basicConfig(level=logging.DEBUG if debug else logging.INFO)
