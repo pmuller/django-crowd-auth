@@ -1,7 +1,8 @@
 import logging
 
 from django.conf import settings
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -32,10 +33,10 @@ def from_data(client, data):
     is_staff = getattr(settings, 'CROWD_USERS_ARE_STAFF', is_superuser)
 
     try:
-        user = User.objects.get(username=username)
+        user = get_user_model().objects.get(username=username)
 
     except ObjectDoesNotExist:
-        user = User.objects.create(
+        user = get_user_model().objects.create(
             username=username,
             first_name=data.get('first-name'),
             last_name=data.get('last-name'),
