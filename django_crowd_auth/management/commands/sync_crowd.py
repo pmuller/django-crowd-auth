@@ -1,7 +1,7 @@
 import logging
 
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group
 
 from django_crowd_auth.client import Client
 from django_crowd_auth import user
