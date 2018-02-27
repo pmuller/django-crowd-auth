@@ -24,7 +24,8 @@ class Backend(ModelBackend):
         if request is None:
             if 'username' in credentials and 'password' in credentials:
                 session = client.auth_user(credentials['username'], credentials['password'])
-                return user.from_data(client, session)
+                if session:
+                    return user.from_data(client, session)
         else:
             remote_addr = request.META['REMOTE_ADDR']
 
