@@ -20,41 +20,47 @@ class Backend(ModelBackend):
         """Authenticate an user.
         """
         client = Client.from_settings()
-        remote_addr = request.META['REMOTE_ADDR']
 
-        if 'token' in credentials:
-            session = client.validate_session(
-                credentials['token'], remote_addr)
-        elif 'username' in credentials and 'password' in credentials:
-            session = client.get_session(
-                credentials['username'], credentials['password'], remote_addr)
+        if request is None:
+            if 'username' in credentials and 'password' in credentials:
+                session = client.auth_user(credentials['username'], credentials['password'])
+                return user.from_data(client, session)
         else:
-            session = None
+            remote_addr = request.META['REMOTE_ADDR']
 
-        if session:
-            request.session['crowd_session_last_validation'] = time()
-            request.session['crowd_session_expiry'] = \
-                datetime.fromtimestamp(session['expiry-date'] / 1000).strftime(
-                    '%a, %d-%b-%y %H:%M:%S GMT')
+            if 'token' in credentials:
+                session = client.validate_session(
+                    credentials['token'], remote_addr)
+            elif 'username' in credentials and 'password' in credentials:
+                session = client.get_session(
+                    credentials['username'], credentials['password'], remote_addr)
+            else:
+                session = None
 
-            if 'django_crowd_auth.middlewares.sso' in settings.MIDDLEWARE:
-                # We do not want to store the token in the session because it
-                # is too sensitive, but we still store it temporarily there to
-                # make it accessible to the SSO middleware. It retrieve it to
-                # set the Crowd cookie, then remote it.
-                # XXX: Find a better way to pass the token to the SSO
-                #      middleware.
-                request.session['crowd_session_token'] = session['token']
+            if session:
+                request.session['crowd_session_last_validation'] = time()
+                request.session['crowd_session_expiry'] = \
+                    datetime.fromtimestamp(session['expiry-date'] / 1000).strftime(
+                        '%a, %d-%b-%y %H:%M:%S GMT')
 
-            request.session.save()
+                if 'django_crowd_auth.middlewares.sso' in settings.MIDDLEWARE:
+                    # We do not want to store the token in the session because it
+                    # is too sensitive, but we still store it temporarily there to
+                    # make it accessible to the SSO middleware. It retrieve it to
+                    # set the Crowd cookie, then remote it.
+                    # XXX: Find a better way to pass the token to the SSO
+                    #      middleware.
+                    request.session['crowd_session_token'] = session['token']
 
-            return user.from_data(client, session['user'])
+                request.session.save()
 
-        else:
-            if 'crowd_session_last_validation' in request.session:
-                del request.session['crowd_session_last_validation']
+                return user.from_data(client, session['user'])
 
-            if 'crowd_session_expiry' in request.session:
-                del request.session['crowd_session_expiry']
+            else:
+                if 'crowd_session_last_validation' in request.session:
+                    del request.session['crowd_session_last_validation']
 
-            request.session.save()
+                if 'crowd_session_expiry' in request.session:
+                    del request.session['crowd_session_expiry']
+
+                request.session.save()
