@@ -15,7 +15,7 @@ Usage
 * To authenticate users against Crowd,
   add ``django_crowd_auth.backends.Backend`` to ``AUTHENTICATION_BACKENDS``.
 * To enable single-sign-on,
-  add ``django_crowd_auth.middleware.sso`` to ``MIDDLEWARE``.
+  add ``django_crowd_auth.middlewares.sso`` to ``MIDDLEWARE``.
   Ensure you also have
   ``django.contrib.sessions.middleware.SessionMiddleware`` and
   ``django.contrib.auth.middleware.AuthenticationMiddleware`` placed before it.
