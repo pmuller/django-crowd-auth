@@ -94,7 +94,7 @@ Example
     MIDDLEWARE = [
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django_crowd_auth.middleware.sso',
+        'django_crowd_auth.middlewares.sso',
     ]
 
 
