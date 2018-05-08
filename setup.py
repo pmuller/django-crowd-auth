@@ -1,7 +1,6 @@
 from os.path import join, dirname, abspath
 
 from setuptools import setup, find_packages
-from pip.req import parse_requirements
 
 
 def read(filename):
