@@ -13,16 +13,15 @@ LOGGER = logging.getLogger(__name__)
 def sso(get_response):
     """Crowd SSO middleware.
     """
-    client = Client.from_settings()
-    cookie_config = client.get_cookie_config()
-    cookie_name = cookie_config['name']
-    cookie_domain = cookie_config['domain']
-    cookie_secure = cookie_config['secure']
-    LOGGER.debug('Crowd cookie config %r', cookie_config)
 
     def middleware(request):
         """Authenticate users having a Crowd cookie.
         """
+        if Client.cookie_config is None:
+            return get_response(request)
+
+        cookie_config = Client.cookie_config
+
         crowd_session_last_validation = \
             request.session.get('crowd_session_last_validation')
 
@@ -40,7 +39,7 @@ def sso(get_response):
                     request.user.username)
                 logout(request)
 
-        cookie_token = request.COOKIES.get(cookie_name)
+        cookie_token = request.COOKIES.get(cookie_config.get('name'))
 
         if not request.user.is_authenticated and cookie_token:
             LOGGER.debug('Trying to auth from cookie %s', cookie_token)
@@ -60,13 +59,15 @@ def sso(get_response):
                 cookie_token = request.session['crowd_session_token']
 
             response.set_cookie(
-                key=cookie_name, value=cookie_token,
+                key=cookie_config.get('name'), value=cookie_token,
                 max_age=None, expires=crowd_session_expiry, path='/',
-                domain=cookie_domain, secure=cookie_secure, httponly=True)
+                domain=cookie_config.get('domain'),
+                secure=cookie_config.get('secure'), httponly=True)
 
         else:
             response.delete_cookie(
-                key=cookie_name, path='/', domain=cookie_domain)
+                key=cookie_config.get('name'), path='/',
+                domain=cookie_config.get('domain'))
 
         return response
 
